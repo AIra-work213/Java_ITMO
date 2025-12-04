@@ -1,0 +1,148 @@
+@startuml
+left to right direction
+skin rose
+package "MyWorld" {
+
+    ' Interfaces
+    interface Ringable {
+        + ring(): void
+    }
+
+    interface Moveable {
+        + move(): void
+    }
+
+    ' Records
+    class SeasonalDisasters <<record>> {
+        + isDrought: boolean
+        + isFrost: boolean
+        + isFlood: boolean
+        + hasLocusts: boolean
+    }
+
+    ' Exceptions
+    class GroundFailureException <<checked>> {
+        - message: String
+        + GroundFailureException(String message)
+        + getMessage(): String
+    }
+
+    class StarvationException <<checked>> {
+        - message: String
+        + StarvationException(String message)
+        + getMessage(): String
+    }
+    class WeddingProcessionLimit <<unchecked>> {
+        - message: String
+        + WeddingProcessionLimit(String message)
+        + getMessage(): String
+    }
+
+    ' Abstract Base Class
+    abstract class Entity {
+        - name: String
+        + Entity(String name)
+        + getName(): String
+        + {abstract} describeState(): String
+        + toString(): String
+        + equals(Object o): boolean
+        + hashCode(): int
+    }
+
+    ' Enums
+    enum SocialStatus {
+        POOR
+        RICH
+        ROYAL
+    }
+
+    enum GroundHazard {
+        FROST
+        DROUGHT
+        FLOOD
+        LOCUSTS
+        NONE
+    }
+
+    ' Concrete Classes
+    class Bell extends Entity implements Ringable {
+        + Bell(String name)
+        + ring(): void
+        + describeState(): String
+    }
+
+    class Human extends Entity implements Moveable {
+        # age: int
+        # status: SocialStatus
+        + Human(String name, int age, SocialStatus status)
+        + move(): void
+        + describeState(): String
+    }
+
+    class Peasant extends Human {
+        - hasGround: boolean
+        - clothingCondition: String
+        - location: String
+        + Peasant(String name, int age, SocialStatus status, String clothingCondition)
+        # sleepOnStraw(): void
+        # tryToEat(): void
+        # sow(Ground ground, SeasonalDisasters disasters): void
+        # getClothingCondition(): void
+        # getLocation(): String
+    }
+
+    class Semen extends Peasant {
+        - isMarried: boolean
+        + Semen(String name, int age, SocialStatus status, String clothingCondition)
+        # marry(): void
+        + getMarriedStatus(): void
+    }
+
+    class King extends Human {
+        + King(String name, int age, SocialStatus status)
+        # observe(WeddingProcession wp): void
+    }
+
+    class Bird extends Entity implements Moveable {
+        - flockSize: int
+        + Bird(String name, int flockSize)
+        + fly(): void
+        + move(): void
+        + describeState(): String
+    }
+
+    class Ground extends Entity {
+        - fertility: double
+        + Ground(String name, double fertility)
+        + processFarming(Peasant peasant, GroundHazard[] hazards): void
+        - createDisasterFromHazard(GroundHazard hazard): SeasonalDisasters
+        # cultivate(SeasonalDisasters disasters): void
+        + describeState(): String
+        + getFertility(): double
+        + isGood(): void
+    }
+
+    class WeddingProcession extends Entity {
+        - participants: ArrayList<Moveable>
+        + WeddingProcession(String name)
+        # addParticipant(Moveable m): void
+        # start(): void
+        + describeState(): String
+    }
+
+    class StorySimulation {
+        + {static} main(String[] args): void
+        - runScene(): void
+    }
+}
+' Relationships
+Peasant --> Ground : uses
+Peasant ..> GroundFailureException : throws
+Peasant ..> StarvationException : throws
+Ground ..> SeasonalDisasters : зависимость
+WeddingProcession o-- Moveable
+King ..> WeddingProcession : наблюдает
+
+@enduml
+
+
