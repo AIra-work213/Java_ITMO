@@ -20,7 +20,7 @@ public final class Semen extends Peasant {
         if (isMarried) {
             System.out.println(getName() + " женат.");
         } else {
-            System.out.println(getName() + " неженат.");
+            System.out.println(getName() + " не женат.");
         }
     }
 
