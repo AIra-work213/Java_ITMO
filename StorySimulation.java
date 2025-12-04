@@ -24,7 +24,9 @@ public class StorySimulation {
         birds.fly();
         
         WeddingProcession procession = new WeddingProcession("cвадебное");
+        // Добавление участников шествия
         procession.addParticipant(birds);
+        
         
         King king = new King("Король", 60, SocialStatus.ROYAL);
         king.observe(procession);

@@ -11,6 +11,9 @@ package "MyWorld" {
     interface Moveable {
         + move(): void
     }
+    interface Holdable {
+        + hold(): void
+    }
 
     ' Records
     class SeasonalDisasters <<record>> {
@@ -122,10 +125,13 @@ package "MyWorld" {
         + isGood(): void
     }
 
-    class WeddingProcession extends Entity {
+    class WeddingProcession implements Holdable {
+        - name: String
         - participants: ArrayList<Moveable>
         + WeddingProcession(String name)
+        + getName(): String
         # addParticipant(Moveable m): void
+        + hold(): void
         # start(): void
         + describeState(): String
     }
